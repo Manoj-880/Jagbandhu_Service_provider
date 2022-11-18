@@ -1,0 +1,6 @@
+package com.example.jagbandhu_service_provider
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
