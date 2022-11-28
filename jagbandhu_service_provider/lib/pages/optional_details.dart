@@ -4,7 +4,8 @@ import 'package:jagbandhu_service_provider/api_calls/login_api.dart';
 import 'package:jagbandhu_service_provider/api_calls/user_details_api.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/home_page.dart';
-import 'package:jagbandhu_service_provider/pages/pending_approval.dart';
+
+import 'approval_pages/pending_approval.dart';
 
 class MoreDetails extends StatefulWidget {
   const MoreDetails({super.key});

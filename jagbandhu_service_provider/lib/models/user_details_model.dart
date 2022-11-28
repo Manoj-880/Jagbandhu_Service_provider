@@ -1,3 +1,5 @@
+import 'package:jagbandhu_service_provider/local_database.dart';
+
 class UserProfileData {
   String? id,
       firstName,

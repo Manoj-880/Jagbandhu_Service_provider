@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:jagbandhu_service_provider/local_database.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/optional_details.dart';
 
@@ -13,11 +14,6 @@ class BasicRegistration extends StatefulWidget {
 }
 
 class _BasicRegistrationState extends State<BasicRegistration> {
-  int groupvalue = 0;
-  int _value = 1;
-  int statusgroupvalue = 0;
-  int _statusvalue = 1;
-
   String lastName = '';
   String? gender;
   final formKey = GlobalKey<FormState>();

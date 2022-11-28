@@ -193,7 +193,7 @@ class Profile_basic extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        margin: const EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 15),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,7 +222,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               children: [
@@ -248,7 +248,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               children: [
@@ -274,7 +274,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               children: [
@@ -300,7 +300,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -330,7 +330,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -357,7 +357,7 @@ class Profile_basic extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,

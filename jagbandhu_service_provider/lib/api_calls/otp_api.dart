@@ -12,14 +12,15 @@ Future otpvalidation(otp) async {
   print('Entered OTP is $otp');
   final otpres = await http.get(
       Uri.parse('${Apilink.ipAddress}/otpvalidation?mobile=$number&otp=$otp'));
+  print(otpres.body);
 
   res = otpres.body;
-  // print(res);
+  print(res);
   if (res == 'Otp Invalid' || res == 'New Provider!') {
     // print(res);
     return otpres.body.toString();
   } else {
-    // print(res);
+    print(res);
     List<dynamic> maps = json.decode(res);
     // print(maps);
 

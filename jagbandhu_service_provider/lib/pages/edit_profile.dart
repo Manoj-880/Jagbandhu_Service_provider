@@ -1,5 +1,7 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jagbandhu_service_provider/api_calls/user_details_api.dart';
+import 'package:jagbandhu_service_provider/pages/profile.dart';
 
 import '../models/user_details_model.dart';
 import '../sections/bottomNavBar.dart';
@@ -18,9 +20,7 @@ class _EditProfileState extends State<EditProfile> {
   late final TextEditingController lastname;
   late final TextEditingController email;
   late final TextEditingController address;
-  late final TextEditingController city;
-  late final TextEditingController state;
-  late final TextEditingController country;
+
   String countryValue = '';
   String stateValue = '';
   String cityValue = '';
@@ -31,14 +31,15 @@ class _EditProfileState extends State<EditProfile> {
     lastname = TextEditingController(text: user.lastname);
     email = TextEditingController(text: user.email);
     address = TextEditingController(text: user.address);
-    city = TextEditingController(text: user.city);
-    state = TextEditingController(text: user.state);
-    country = TextEditingController(text: user.country);
+    cityValue = user.city!;
+    stateValue = user.state!;
+    countryValue = user.country!;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(user.id);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(
@@ -58,8 +59,35 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: TextButton(
-              onPressed: () {
-                print('Save details');
+              onPressed: () async {
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
+                  user.firstName = firstname.text;
+                  user.lastname = lastname.text;
+                  user.email = email.text;
+                  user.address = address.text;
+                  user.city = cityValue;
+                  user.state = stateValue;
+                  user.country = countryValue;
+
+                  await updateuserdetailsapi(
+                    user.id,
+                    user.firstName,
+                    user.lastname,
+                    user.email,
+                    user.address,
+                    user.city,
+                    user.state,
+                    user.country,
+                    user.phonenumber,
+                  );
+
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MyProfile()),
+                  );
+                }
               },
               child: const Text(
                 'Save',
@@ -410,9 +438,9 @@ class _EditProfileState extends State<EditProfile> {
                         child: CSCPicker(
                           layout: Layout.vertical,
                           showStates: true,
-                          currentCountry: user.country,
-                          currentState: user.state,
-                          currentCity: user.city,
+                          currentCountry: countryValue,
+                          currentState: stateValue,
+                          currentCity: cityValue,
                           showCities: true,
                           flagState: CountryFlag.DISABLE,
                           dropdownDecoration: BoxDecoration(

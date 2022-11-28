@@ -3,14 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
+import 'package:jagbandhu_service_provider/pages/approval_pages/rejected_page.dart';
 import 'package:jagbandhu_service_provider/pages/basic_registration.dart';
 import 'package:jagbandhu_service_provider/pages/earnings.dart';
 import 'package:jagbandhu_service_provider/pages/home_page.dart';
 import 'package:jagbandhu_service_provider/pages/my_templates.dart';
-import 'package:jagbandhu_service_provider/pages/pending_approval.dart';
+// import 'package:jagbandhu_service_provider/pages/pending_approval.dart';
 // ignore: unused_import
 
 import '../api_calls/otp_api.dart';
+import 'approval_pages/pending_approval.dart';
 import 'login.dart';
 
 class OTPPage extends StatefulWidget {
@@ -150,7 +152,7 @@ class _OTPPageState extends State<OTPPage> {
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(6)
+                        LengthLimitingTextInputFormatter(6),
                       ],
                       onChanged: (value) => otp = value,
                       controller: otpcontroller,
@@ -172,6 +174,7 @@ class _OTPPageState extends State<OTPPage> {
                         // ignore: sort_child_properties_last
                         child: TextButton(
                           onPressed: () async {
+                            print('verify');
                             var values = await otpvalidation(otp);
 
                             if (values == 'New Provider!') {
@@ -187,20 +190,14 @@ class _OTPPageState extends State<OTPPage> {
                             } else {
                               userdata = values;
                               newUser.status = userdata[0].status;
-                              if (newUser.status == '0') {
+                              if (newUser.status == '1') {
                                 // ignore: use_build_context_synchronously
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()),
                                 );
-                                // ignore: use_build_context_synchronously
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => const HomePage()),
-                                // );
-                              } else if (newUser.status == '1') {
+                              } else if (newUser.status == '0') {
                                 // ignore: use_build_context_synchronously
                                 Navigator.push(
                                   context,
@@ -209,11 +206,12 @@ class _OTPPageState extends State<OTPPage> {
                                           const PendingApproval()),
                                 );
                               } else if (newUser.status == '2') {
+                                print('Rejected');
                                 // ignore: use_build_context_synchronously
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Earnings()),
+                                      builder: (context) => const Rejected()),
                                 );
                               }
                             }
