@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jagbandhu_service_provider/pages/assemble_layers.dart';
+import 'package:jagbandhu_service_provider/api_calls/assemble_layers_api.dart';
+import 'package:jagbandhu_service_provider/api_calls/home_api.dart';
+import 'package:jagbandhu_service_provider/api_calls/template_posted_api.dart';
+import 'package:jagbandhu_service_provider/pages/assemble%20layers/assemble_layers.dart';
 import 'package:jagbandhu_service_provider/pages/home_page.dart';
 
 import '../sections/bottomNavBar.dart';
@@ -206,6 +209,7 @@ class _PreviewTemplateState extends State<PreviewTemplate> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      var values = assembleapi();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -237,6 +241,7 @@ class _PreviewTemplateState extends State<PreviewTemplate> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      var values = postedapi();
                       showDialog(
                           context: context,
                           builder: (context) => Post_PopUp(size: size));
@@ -319,6 +324,7 @@ class Post_PopUp extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
+                var values = homeapi();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const HomePage()),

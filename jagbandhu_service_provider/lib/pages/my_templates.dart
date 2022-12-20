@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/models/my_templates_model.dart';
 import 'package:jagbandhu_service_provider/sections/bottomnavbar.dart';
 
+import '../api_calls/add_template_api.dart';
 import 'add_templates.dart';
 
 class MyTemplates extends StatefulWidget {
@@ -78,8 +79,8 @@ class _MyTemplatesState extends State<MyTemplates> {
         index: 2,
       ),
       floatingActionButton: GestureDetector(
-        onTap: () {
-          // ignore: avoid_print
+        onTap: () async {
+          // ignore: avoid_print, use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddTemplates()),

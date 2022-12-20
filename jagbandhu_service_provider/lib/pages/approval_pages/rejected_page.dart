@@ -9,7 +9,7 @@ class Rejected extends StatelessWidget {
     return Scaffold(
       body: Container(
         padding:
-            EdgeInsets.symmetric(horizontal: 20, vertical: size.height * 0.3),
+            EdgeInsets.symmetric(horizontal: 20, vertical: size.height * 0.1),
         color: const Color(0xffF5D7D2),
         height: size.height,
         width: size.width,

@@ -1,6 +1,12 @@
+// ignore_for_file: unused_import
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:jagbandhu_service_provider/api_calls/add_template_api.dart';
+import 'package:jagbandhu_service_provider/api_calls/assemble_layers_api.dart';
 import 'package:jagbandhu_service_provider/models/layers_model.dart';
-import 'package:jagbandhu_service_provider/pages/assemble_layers.dart';
+import 'package:jagbandhu_service_provider/models/user_details_model.dart';
+import 'package:jagbandhu_service_provider/pages/assemble%20layers/assemble_layers.dart';
 
 import '../sections/bottomNavBar.dart';
 
@@ -12,7 +18,21 @@ class AddTemplates extends StatefulWidget {
 }
 
 class _AddTemplatesState extends State<AddTemplates> {
+  UserProfileData user = userdata[0];
+  final formKey = GlobalKey<FormState>();
+  TextEditingController title = TextEditingController();
+  String? Title;
+  TextEditingController disc = TextEditingController();
+  String? Discription;
+  TextEditingController amount = TextEditingController();
+  String? Price;
   List<bool> iscard = [];
+  final List<String> items = [
+    'event 1',
+    'event 2',
+    'event 3',
+  ];
+  String? category;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -32,227 +52,224 @@ class _AddTemplatesState extends State<AddTemplates> {
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () {
-                // ignore: avoid_print
-                print('Upload file');
-              },
-              child: Container(
-                height: size.height * 0.15,
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: const Color(0xffFFA95D), width: 2),
+      body: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.04,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.file_upload_outlined,
-                      size: 30,
-                      color: const Color(0xff3B1D2C).withOpacity(0.4),
-                    ),
-                    Text(
-                      'Upload template layers',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: const Color(0xff3B1D2C).withOpacity(0.4),
-                        fontWeight: FontWeight.normal,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              maxLines: 1,
-              style: const TextStyle(fontSize: 18),
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                filled: true,
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                fillColor: const Color(0xffffffff),
-                contentPadding: const EdgeInsets.only(left: 20, right: 20),
-                hintText: 'Title :',
-                hintStyle: TextStyle(
-                    color: const Color(0xff3B1D2C).withOpacity(0.4),
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              maxLines: 5,
-              style: const TextStyle(fontSize: 18),
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                filled: true,
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                fillColor: const Color(0xffffffff),
-                contentPadding:
-                    const EdgeInsets.only(left: 20, right: 20, top: 20),
-                hintText: 'Discription :',
-                hintStyle: TextStyle(
-                    color: const Color(0xff3B1D2C).withOpacity(0.4),
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              maxLines: 1,
-              style: const TextStyle(fontSize: 18),
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                filled: true,
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xffFFA95D), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                fillColor: const Color(0xffffffff),
-                contentPadding: const EdgeInsets.only(left: 20, right: 20),
-                hintText: 'Price :',
-                hintStyle: TextStyle(
-                    color: const Color(0xff3B1D2C).withOpacity(0.4),
-                    fontWeight: FontWeight.normal),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(
-                    left: 20, top: 10, right: 20, bottom: 2),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: const Color(0xffFFA95D), width: 2),
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Select editable layers :',
+                Container(
+                  height: 60,
+                  // ignore: sort_child_properties_last
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton2(
+                        hint: Text(
+                          'Event Category',
                           style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                            color: const Color(0xff3B1D2C).withOpacity(0.4),
-                          ),
+                              fontSize: 16,
+                              color: Color(0xff3B1D2C).withOpacity(0.4),
+                              fontWeight: FontWeight.normal),
                         ),
-                        Text(
-                          '4/${layersData.length}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                            color: const Color(0xff3B1D2C).withOpacity(0.6),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Expanded(
-                        child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: size.height * 0.003,
-                        crossAxisSpacing: 10,
+                        items: items
+                            .map(
+                              (item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Color(0xff3B1D2C),
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                        value: category,
+                        onChanged: (value) {
+                          setState(() {
+                            category = value as String;
+                          });
+                        },
+                        buttonHeight: 40,
+                        buttonWidth: double.infinity,
                       ),
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: layersData.length,
-                      itemBuilder: (context, index) {
-                        iscard.add(false);
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              iscard[index] = !iscard[index];
-                            });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffFFA95D)),
-                                borderRadius: BorderRadius.circular(20),
-                                color: iscard[index]
-                                    ? const Color(0xffF65D46)
-                                    : Colors.white),
-                            padding: const EdgeInsets.all(5),
-                            child: Text(
-                              layersData[index].name.trim(),
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: iscard[index]
-                                      ? Colors.white
-                                      : const Color(0xff3B1D2C)),
-                            ),
-                          ),
-                        );
-                      },
-                    )),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AssembleLayers()),
-                );
-              },
-              child: Container(
-                height: size.height * 0.06,
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: const Color(0xffFFA95D),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Assemble Layers',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color(0xffffffff),
+                      border:
+                          Border.all(color: const Color(0xffFFA95D), width: 2)),
                 ),
-              ),
-            )
-          ],
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: title,
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 18),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    filled: true,
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    errorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    fillColor: const Color(0xffffffff),
+                    contentPadding: const EdgeInsets.only(left: 20, right: 20),
+                    hintText: 'Title :',
+                    hintStyle: TextStyle(
+                        color: const Color(0xff3B1D2C).withOpacity(0.4),
+                        fontWeight: FontWeight.normal),
+                  ),
+                  onChanged: (value) => Title = value,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return '*This field is mandatory';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: disc,
+                  maxLines: 5,
+                  style: const TextStyle(fontSize: 18),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    filled: true,
+                    errorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    fillColor: const Color(0xffffffff),
+                    contentPadding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 20),
+                    hintText: 'Discription :',
+                    hintStyle: TextStyle(
+                        color: const Color(0xff3B1D2C).withOpacity(0.4),
+                        fontWeight: FontWeight.normal),
+                  ),
+                  onChanged: (value) => Discription = value,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return '*This field is mandatory';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  controller: amount,
+                  keyboardType: TextInputType.number,
+                  maxLines: 1,
+                  style: const TextStyle(fontSize: 18),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    filled: true,
+                    focusedErrorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    errorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Color(0xffFFA95D), width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    fillColor: const Color(0xffffffff),
+                    contentPadding: const EdgeInsets.only(left: 20, right: 20),
+                    hintText: 'Price :',
+                    hintStyle: TextStyle(
+                        color: const Color(0xff3B1D2C).withOpacity(0.4),
+                        fontWeight: FontWeight.normal),
+                  ),
+                  onChanged: (value) => Price = value,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return '*This field is mandatory';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    if (formKey.currentState!.validate()) {
+                      formKey.currentState!.save();
+                      // var values = addtemplateapi(
+                      //     user.id, category, title.text, Discription, Price);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AssembleLayers()),
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: size.height * 0.06,
+                    width: size.width,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffFFA95D),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Add Template',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

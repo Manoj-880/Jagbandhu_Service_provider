@@ -5,6 +5,8 @@ import 'package:jagbandhu_service_provider/pages/my_templates.dart';
 
 import 'package:jagbandhu_service_provider/pages/profile.dart';
 
+import '../api_calls/add_template_api.dart';
+import '../api_calls/my_templates_api.dart';
 import '../sections/bottomNavBar.dart';
 
 class HomePage extends StatefulWidget {
@@ -161,7 +163,8 @@ class _HomePageState extends State<HomePage> {
                                           color: const Color(0xffF5D7D2)),
                                     ),
                                     GestureDetector(
-                                      onTap: () {
+                                      onTap: () async {
+                                        // ignore: use_build_context_synchronously
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -324,7 +327,9 @@ class _HomePageState extends State<HomePage> {
                                         color: Color(0xff3B1D2C)),
                                   ),
                                   GestureDetector(
-                                    onTap: () {
+                                    onTap: () async {
+                                      var values = await mytemplatesapi();
+                                      // ignore: use_build_context_synchronously
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jagbandhu_service_provider/api_calls/edit_profile_api.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/edit_profile.dart';
 import 'package:jagbandhu_service_provider/pages/login.dart';
@@ -88,6 +89,7 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      var values = edit_profile_api();
                       // ignore: avoid_print
                       Navigator.push(
                         context,
