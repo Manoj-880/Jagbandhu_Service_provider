@@ -1,122 +1,81 @@
-import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqflite.dart' as sql;
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'models/user_details_model.dart';
 
-class DatabaseHelper {
-  static Future<void> createTables(sql.Database database) async {
-    await database.execute("""CREATE TABLE items(
-        id VARCHAR PRIMARY KEY NOT NULL,
-        firstName TEXT,
-        lastName TEXT,
-        mobilenumber VARCHAR,
-        gender TEXT,
-        dob TEXT,
-        email TEXT,
-        address TEXT,
-        city TEXT,
-        state TEXT,
-        country TEXT,
-        status VARCHAR,
-        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-      """);
-  }
-// id: the id of a item
-// title, description: name and description of your activity
-// created_at: the time that the item was created. It will be automatically handled by SQLite
+// ignore: prefer_typing_uninitialized_variables
+var opendatabase;
+Future<void> database() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  String dbPath = await getDatabasesPath();
 
-  static Future<sql.Database> db() async {
-    return sql.openDatabase(
-      'localuserdetails.db',
-      version: 1,
-      onCreate: (sql.Database database, int version) async {
-        await createTables(database);
-      },
+  opendatabase = openDatabase(
+    join(dbPath, 'jagbhandh_service_app.db'),
+    onCreate: (db, version) async {
+      await db.execute(
+        '''CREATE TABLE IF NOT EXISTS userDetails(id INTEGER , firstName TEXT,lastName TEXT, mobile VARCHAR(12),gender VARCHAR(10),dob VARCHAR(30),email VARCHAR(50),state VARCHAR(20),district VARCHAR(20),country VARCHAR(40),address VARCHAR(100),status VARCHAR(10))''',
+      );
+    },
+    version: 1,
+  );
+  userdata = await user();
+  return opendatabase;
+}
+
+Future insertUser(UserProfileData user) async {
+  final db = await opendatabase;
+  //try {
+  await db.insert(
+    'userDetails',
+    user.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+
+  debugPrint('inserted  is $user');
+}
+
+Future<List<UserProfileData>> user() async {
+  final db = await opendatabase;
+
+  final List<Map<String, dynamic>> maps = await db.query('userDetails');
+
+  List<UserProfileData> userslist = List.generate(maps.length, (i) {
+    return UserProfileData(
+      id: (maps[i]['id'].toString()),
+      firstName: maps[i]['firstName'].toString(),
+      lastname: maps[i]['lastName'].toString(),
+      phonenumber: maps[i]['mobile'].toString(),
+      email: maps[i]['email'].toString(),
+      dob: maps[i]['dob'].toString(),
+      state: maps[i]['state'].toString(),
+      city: maps[i]['city'].toString(),
+      address: maps[i]['address'].toString(),
+      country: maps[i]['country'].toString(),
+      gender: maps[i]['gender'].toString(),
     );
-  }
+  });
 
-  // Create new item
-  static Future<int> createItem(
-      String? id,
-      String? firstName,
-      String? lastName,
-      String? mobilenumber,
-      String? gender,
-      String? dob,
-      String? email,
-      String? address,
-      String? city,
-      String? state,
-      String? country,
-      String? status) async {
-    final db = await DatabaseHelper.db();
+  userdata = userslist;
+  return userslist;
+}
 
-    final data = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'mobilenumber': mobilenumber,
-      'gender': gender,
-      'dob': dob,
-      'email': email,
-      'addess': address,
-      'city': city,
-      'state': state,
-      'country': country,
-      'status': status
-    };
-    final id = await db.insert('items', data,
-        conflictAlgorithm: sql.ConflictAlgorithm.replace);
-    return id;
-  }
+Future<void> deleteUserDetails() async {
+  final db = await opendatabase;
+  await db.delete('userDetails');
+  debugPrint('users list is deleted');
+}
 
-  // Read all items
-  static Future<List<Map<String, dynamic>>> getItems() async {
-    final db = await DatabaseHelper.db();
-    return db.query('items', orderBy: "id");
-  }
+Future updateUser(UserProfileData editUser) async {
+  final db = await opendatabase;
 
-  // Get a single item by id
-  //We dont use this method, it is for you if you want it.
-  //   static Future<List<Map<String, dynamic>>> getItem(int id) async {
-  //   final db = await DatabaseHelper.db();
-  //   return db.query('items', where: "id = ?", whereArgs: [id], limit: 1);
-  // }
-
-  // Update an item by id
-  static Future<int> updateItem(
-      String? id,
-      String? firstName,
-      String? lastName,
-      String? mobilenumber,
-      String? email,
-      String? address,
-      String? city,
-      String? state,
-      String? country) async {
-    final db = await DatabaseHelper.db();
-
-    final data = {
-      'firstName': firstName,
-      'lastName': lastName,
-      'mobilenumber': mobilenumber,
-      'email': email,
-      'addess': address,
-      'city': city,
-      'state': state,
-      'country': country
-    };
-
-    final result =
-        await db.update('items', data, where: "id = ?", whereArgs: [id]);
-    return result;
-  }
-
-  // Delete
-  static Future<void> deleteItem(int id) async {
-    final db = await DatabaseHelper.db();
-    try {
-      await db.delete("items", where: "id = ?", whereArgs: [id]);
-    } catch (err) {
-      debugPrint("Something went wrong when deleting an item: $err");
-    }
-  }
+  await db.update(
+    'userDetails',
+    editUser.toMap(),
+    // Ensure that the Dog has a matching id.
+    where: 'id = ?',
+    // Pass the Dog's id as a whereArg to prevent SQL injection.
+    whereArgs: [editUser.id],
+  );
+  debugPrint(editUser.toString());
 }

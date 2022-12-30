@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:jagbandhu_service_provider/pages/assemble%20layers/assemble_layers.dart';
+import 'package:jagbandhu_service_provider/local_database.dart';
+import 'package:jagbandhu_service_provider/models/user_details_model.dart';
+import 'package:jagbandhu_service_provider/pages/home_page.dart';
 // import 'package:jagbandhu/pages/loginpage.dart';
 import 'package:jagbandhu_service_provider/pages/login.dart';
 
@@ -14,17 +16,36 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  checkData() async {
+    await database();
+    userdata = await user();
+    print(userdata);
+  }
+
   @override
   initState() {
-    Timer(
-      const Duration(seconds: 2),
-      () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
+    checkData();
+    if (userdata.isEmpty) {
+      Timer(
+        const Duration(seconds: 2),
+        () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      Timer(
+        const Duration(seconds: 2),
+        () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        ),
+      );
+    }
     super.initState();
   }
 

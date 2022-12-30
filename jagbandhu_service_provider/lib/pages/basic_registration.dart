@@ -1,8 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/services.dart';
-import 'package:jagbandhu_service_provider/local_database.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/optional_details.dart';
 
@@ -29,6 +27,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
   bool texterror = false;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Form(
@@ -59,7 +58,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -71,30 +70,31 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                       maxLines: 1,
                       style: const TextStyle(fontSize: 18),
                       textAlignVertical: TextAlignVertical.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         filled: true,
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        fillColor: Color(0xffffffff),
-                        focusedErrorBorder: OutlineInputBorder(
+                        fillColor: const Color(0xffffffff),
+                        focusedErrorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        errorBorder: OutlineInputBorder(
+                        errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        contentPadding: EdgeInsets.only(left: 20, right: 20),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, right: 20),
                         hintText: 'First Name',
-                        errorStyle: TextStyle(fontSize: 10, height: 0.1),
+                        errorStyle: const TextStyle(fontSize: 10, height: 0.1),
                         hintStyle: TextStyle(
-                            color: Color(0xff3B1D2C),
+                            color: const Color(0xff3B1D2C).withOpacity(0.4),
                             fontWeight: FontWeight.w300),
                       ),
                       controller: fname,
@@ -107,7 +107,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                     ),
                   ),
                   const SizedBox(
-                    height: 5.0,
+                    height: 10.0,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -119,30 +119,31 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                       maxLines: 1,
                       style: const TextStyle(fontSize: 18),
                       textAlignVertical: TextAlignVertical.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         filled: true,
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        fillColor: Color(0xffffffff),
-                        focusedErrorBorder: OutlineInputBorder(
+                        fillColor: const Color(0xffffffff),
+                        focusedErrorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        errorBorder: OutlineInputBorder(
+                        errorBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        contentPadding: EdgeInsets.only(left: 20, right: 20),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, right: 20),
                         hintText: 'Last Name',
-                        errorStyle: TextStyle(fontSize: 10, height: 0.1),
+                        errorStyle: const TextStyle(fontSize: 10, height: 0.1),
                         hintStyle: TextStyle(
-                            color: Color(0xff3B1D2C),
+                            color: const Color(0xff3B1D2C).withOpacity(0.4),
                             fontWeight: FontWeight.w300),
                       ),
                       validator: (value) {
@@ -155,7 +156,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                     ),
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -163,7 +164,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                       right: 20,
                     ),
                     child: Container(
-                      height: 60,
+                      height: size.height * 0.06,
                       // ignore: sort_child_properties_last
                       child: GestureDetector(
                         child: Padding(
@@ -196,18 +197,20 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                                 });
                               }
                             },
-                            decoration: const InputDecoration(
-                              suffixIcon: Icon(
+                            decoration: InputDecoration(
+                              suffixIcon: const Icon(
                                 Icons.calendar_month,
                                 size: 22,
                               ),
                               hintText: 'Date of Birth',
                               hintStyle: TextStyle(
-                                  color: Color(0xff3B1D2C),
+                                  color:
+                                      const Color(0xff3B1D2C).withOpacity(0.4),
                                   fontWeight: FontWeight.w300),
                               focusedErrorBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
-                              errorStyle: TextStyle(fontSize: 10, height: 0.2),
+                              errorStyle:
+                                  const TextStyle(fontSize: 10, height: 0.2),
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
@@ -221,7 +224,7 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                     ),
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
@@ -229,17 +232,18 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                       right: 20,
                     ),
                     child: Container(
-                      height: 60,
+                      height: size.height * 0.06,
                       // ignore: sort_child_properties_last
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton2(
-                            hint: const Text(
+                            hint: Text(
                               'Gender',
                               style: TextStyle(
                                   fontSize: 16,
-                                  color: Color(0xff3B1D2C),
+                                  color:
+                                      const Color(0xff3B1D2C).withOpacity(0.4),
                                   fontWeight: FontWeight.normal),
                             ),
                             items: items
@@ -273,8 +277,8 @@ class _BasicRegistrationState extends State<BasicRegistration> {
                           border: Border.all(color: const Color(0xffFFD4AE))),
                     ),
                   ),
-                  const SizedBox(
-                    height: 15.0,
+                  SizedBox(
+                    height: size.height * 0.04,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

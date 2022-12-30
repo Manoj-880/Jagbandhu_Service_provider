@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jagbandhu_service_provider/Constants/api.dart';
@@ -44,4 +45,32 @@ Future<String> updateuserdetailsapi(
   print(userresponse.body);
 
   return userresponse.body;
+}
+
+Future getuserDetails(mobile) async {
+  final detailsresponse = await http.get(
+      Uri.parse("${Apilink.ipAddress}/appgetprovidersdetails?mobile=$mobile"));
+  debugPrint(detailsresponse.body);
+  List<dynamic> maps = json.decode(detailsresponse.body);
+
+  List<UserProfileData> user = List.generate(maps.length, (index) {
+    return UserProfileData(
+      id: maps[index]['pdId'].toString(),
+      firstName: (maps[index]['firstName']).toString(),
+      lastname: (maps[index]['lastName']).toString(),
+      dob: (maps[index]['dob']).toString(),
+      gender: (maps[index]['gender']).toString(),
+      email: (maps[index]['email']).toString(),
+      phonenumber: (maps[index]['mobile']).toString(),
+      // address: (maps[index]['address']).toString(),
+      country: (maps[index]['country']).toString(),
+      state: (maps[index]['state']).toString(),
+      city: (maps[index]['district']).toString(),
+      status: (maps[index]['status']).toString(),
+    );
+  });
+
+  userdata = user;
+
+  return user;
 }

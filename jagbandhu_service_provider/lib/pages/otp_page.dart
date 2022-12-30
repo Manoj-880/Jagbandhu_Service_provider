@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:jagbandhu_service_provider/local_database.dart';
 import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/approval_pages/rejected_page.dart';
@@ -191,6 +192,7 @@ class _OTPPageState extends State<OTPPage> {
                               userdata = values;
                               newUser.status = userdata[0].status;
                               if (newUser.status == '1') {
+                                await insertUser(userdata[0]);
                                 // ignore: use_build_context_synchronously
                                 Navigator.push(
                                   context,

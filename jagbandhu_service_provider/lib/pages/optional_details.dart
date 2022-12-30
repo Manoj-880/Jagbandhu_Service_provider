@@ -1,11 +1,8 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:jagbandhu_service_provider/api_calls/home_api.dart';
-import 'package:jagbandhu_service_provider/api_calls/login_api.dart';
 import 'package:jagbandhu_service_provider/api_calls/user_details_api.dart';
+import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
-import 'package:jagbandhu_service_provider/pages/home_page.dart';
-
 import 'approval_pages/pending_approval.dart';
 
 class MoreDetails extends StatefulWidget {
@@ -69,24 +66,32 @@ class _MoreDetailsState extends State<MoreDetails> {
                       maxLines: 1,
                       style: const TextStyle(fontSize: 18),
                       textAlignVertical: TextAlignVertical.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         filled: true,
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xffFFD4AE)),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        fillColor: Color(0xffffffff),
-                        contentPadding: EdgeInsets.only(left: 20, right: 20),
+                        fillColor: const Color(0xffffffff),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, right: 20),
                         hintText: 'E-mail',
                         hintStyle: TextStyle(
-                            color: Color(0xff3B1D2C),
+                            color: const Color(0xff3B1D2C).withOpacity(0.2),
                             fontWeight: FontWeight.w300),
-                        errorBorder: InputBorder.none,
-                        errorStyle: TextStyle(fontSize: 10, height: 0.1),
+                        focusedErrorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFFD4AE)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30))),
+                        errorBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffFFD4AE)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30))),
+                        errorStyle: const TextStyle(fontSize: 10, height: 0.1),
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -109,25 +114,33 @@ class _MoreDetailsState extends State<MoreDetails> {
                       maxLines: 1,
                       style: const TextStyle(fontSize: 18),
                       textAlignVertical: TextAlignVertical.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           filled: true,
-                          enabledBorder: OutlineInputBorder(
+                          enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0xffFFD4AE)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30))),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Color(0xffFFD4AE)),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(30))),
-                          fillColor: Color(0xffffffff),
-                          contentPadding: EdgeInsets.only(left: 20, right: 20),
+                          fillColor: const Color(0xffffffff),
+                          contentPadding:
+                              const EdgeInsets.only(left: 20, right: 20),
                           hintText: 'Address',
                           hintStyle: TextStyle(
-                              color: Color(0xff3B1D2C),
+                              color: const Color(0xff3B1D2C).withOpacity(0.4),
                               fontWeight: FontWeight.w300),
-                          focusedErrorBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          errorStyle: TextStyle(fontSize: 10, height: 0.2)),
+                          focusedErrorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffFFD4AE)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                          errorBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffFFD4AE)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30))),
+                          errorStyle:
+                              const TextStyle(fontSize: 10, height: 0.2)),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return '*This field is mandatory';
@@ -164,7 +177,7 @@ class _MoreDetailsState extends State<MoreDetails> {
                       disabledDropdownDecoration: BoxDecoration(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
-                          color: Colors.grey.shade300,
+                          color: Colors.white,
                           border: Border.all(
                               color: const Color(0xffFFD4AE), width: 1)),
 
@@ -174,9 +187,9 @@ class _MoreDetailsState extends State<MoreDetails> {
                       citySearchPlaceholder: "City",
 
                       ///labels for dropdown
-                      countryDropdownLabel: "*Country",
-                      stateDropdownLabel: "*State",
-                      cityDropdownLabel: "*City",
+                      countryDropdownLabel: " *Country",
+                      stateDropdownLabel: " *State",
+                      cityDropdownLabel: " *City",
 
                       ///Default Country
                       //defaultCountry: DefaultCountry.India,
@@ -254,11 +267,32 @@ class _MoreDetailsState extends State<MoreDetails> {
                           //margin: const EdgeInsets.only(right: 20),
                           // ignore: sort_child_properties_last
                           child: TextButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              newUser.email = 'null';
+                              newUser.address = 'null';
+                              newUser.city = 'null';
+                              newUser.state = 'null';
+                              newUser.country = 'India';
+                              userdetailsapi(
+                                newUser.firstName,
+                                newUser.lastname,
+                                newUser.dob,
+                                newUser.gender,
+                                newUser.email,
+                                newUser.phonenumber,
+                                newUser.address,
+                                newUser.city,
+                                newUser.country,
+                                newUser.state,
+                              );
+                              getuserDetails(
+                                number,
+                              );
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const HomePage()),
+                                    builder: (context) =>
+                                        const PendingApproval()),
                               );
                             },
                             child: const Text(
@@ -310,6 +344,9 @@ class _MoreDetailsState extends State<MoreDetails> {
                                   newUser.city,
                                   newUser.country,
                                   newUser.state,
+                                );
+                                getuserDetails(
+                                  number,
                                 );
                                 Navigator.push(
                                   context,

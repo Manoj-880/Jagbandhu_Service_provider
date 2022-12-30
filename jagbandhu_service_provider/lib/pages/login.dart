@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jagbandhu_service_provider/api_calls/login_api.dart';
-import 'package:jagbandhu_service_provider/models/globalParams.dart';
 
 import 'otp_page.dart';
 
@@ -27,8 +26,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -40,16 +40,15 @@ class _LoginPageState extends State<LoginPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            // ignore: prefer_const_literals_to_create_immutables
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                // ignore: prefer_const_literals_to_create_immutables
                 children: [
-                  const ClipOval(
+                  ClipOval(
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/logo.png'),
-                      radius: 80,
+                      backgroundImage:
+                          const AssetImage('assets/images/logo.png'),
+                      radius: size.height * 0.065,
                     ),
                   )
                 ],
@@ -138,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                               // ignore: unused_local_variable
                               //call to backend for otp.
                               var values = await userlogin(phoneNumber);
+                              // ignore: use_build_context_synchronously
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
