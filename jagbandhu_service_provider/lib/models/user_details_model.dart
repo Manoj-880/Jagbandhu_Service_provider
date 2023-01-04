@@ -13,6 +13,7 @@ class UserProfileData {
       country,
       state,
       city;
+  var image;
 
   UserProfileData({
     this.id,
@@ -27,6 +28,7 @@ class UserProfileData {
     this.state,
     this.city,
     this.status,
+    this.image,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,12 +45,13 @@ class UserProfileData {
       'state': state,
       'district': city,
       'status': status,
+      'image': image,
     };
   }
 
   @override
   String toString() {
-    return 'UserProfileData{id:$id,firstName: $firstName,lastName: $lastname,dob:$dob,gender:$gender,email:$email,mobile:$phonenumber,address:$address,country:$country,state:$state,district:$city,status:$status}';
+    return 'UserProfileData{id:$id,firstName: $firstName,lastName: $lastname,dob:$dob,gender:$gender,email:$email,mobile:$phonenumber,address:$address,country:$country,state:$state,district:$city,status:$status,image:$image}';
   }
 }
 

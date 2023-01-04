@@ -11,10 +11,10 @@ Future<void> database() async {
   String dbPath = await getDatabasesPath();
 
   opendatabase = openDatabase(
-    join(dbPath, 'jagbhandh_service_app.db'),
+    join(dbPath, 'jagbhandh_service.db'),
     onCreate: (db, version) async {
       await db.execute(
-        '''CREATE TABLE IF NOT EXISTS userDetails(id INTEGER , firstName TEXT,lastName TEXT, mobile VARCHAR(12),gender VARCHAR(10),dob VARCHAR(30),email VARCHAR(50),state VARCHAR(20),district VARCHAR(20),country VARCHAR(40),address VARCHAR(100),status VARCHAR(10))''',
+        '''CREATE TABLE IF NOT EXISTS userDetails(id INTEGER , firstName TEXT,lastName TEXT, mobile VARCHAR(12),gender VARCHAR(10),dob VARCHAR(30),email VARCHAR(50),state VARCHAR(20),district VARCHAR(20),country VARCHAR(40),address VARCHAR(100),status VARCHAR(10),image VARCHAR(300))''',
       );
     },
     version: 1,
@@ -53,6 +53,7 @@ Future<List<UserProfileData>> user() async {
       address: maps[i]['address'].toString(),
       country: maps[i]['country'].toString(),
       gender: maps[i]['gender'].toString(),
+      image: maps[i]['image'],
     );
   });
 

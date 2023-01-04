@@ -2,13 +2,9 @@
 // ignore_for_file: file_names, duplicate_ignore
 
 import 'package:flutter/material.dart';
-import 'package:jagbandhu_service_provider/api_calls/earnings_api.dart';
-import 'package:jagbandhu_service_provider/api_calls/home_api.dart';
-import 'package:jagbandhu_service_provider/api_calls/profile_api.dart';
 import 'package:jagbandhu_service_provider/pages/earnings.dart';
 import 'package:jagbandhu_service_provider/pages/my_templates.dart';
 
-import '../api_calls/my_templates_api.dart';
 import '../pages/home_page.dart';
 import '../pages/profile.dart';
 import 'dart:math' as math;
@@ -195,14 +191,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   navigatetopage(index) async {
     if (index == 0) {
-      var values = await homeapi();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     }
     if (index == 1) {
-      var values = await earningsapi();
       // ignore: use_build_context_synchronously
       Navigator.push(
         context,
@@ -210,7 +204,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       );
     }
     if (index == 2) {
-      var values = await mytemplatesapi();
       // ignore: use_build_context_synchronously
       Navigator.push(
         context,
@@ -218,7 +211,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
       );
     }
     if (index == 3) {
-      var values = await profileapi();
       // ignore: use_build_context_synchronously
       Navigator.push(
         context,

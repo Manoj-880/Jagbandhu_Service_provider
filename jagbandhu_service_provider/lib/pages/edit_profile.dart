@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/api_calls/user_details_api.dart';
+import 'package:jagbandhu_service_provider/local_database.dart';
+import 'package:jagbandhu_service_provider/models/imagepicker_cropper.dart';
 import 'package:jagbandhu_service_provider/pages/profile.dart';
 
 import '../models/user_details_model.dart';
@@ -24,7 +28,9 @@ class _EditProfileState extends State<EditProfile> {
   String countryValue = '';
   String stateValue = '';
   String cityValue = '';
-
+  var encodeImage;
+  var image;
+  var img;
   @override
   void initState() {
     firstname = TextEditingController(text: user.firstName);
@@ -39,6 +45,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
+    image = base64.decode(user.image);
     print(user.id);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -69,6 +76,7 @@ class _EditProfileState extends State<EditProfile> {
                   user.city = cityValue;
                   user.state = stateValue;
                   user.country = countryValue;
+                  user.image = encodeImage ?? user.image;
 
                   await updateuserdetailsapi(
                     user.id,
@@ -80,7 +88,9 @@ class _EditProfileState extends State<EditProfile> {
                     user.state,
                     user.country,
                     user.phonenumber,
+                    img ?? '',
                   );
+                  updateUser(user);
 
                   // ignore: use_build_context_synchronously
                   Navigator.push(
@@ -113,10 +123,9 @@ class _EditProfileState extends State<EditProfile> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const ClipOval(
+                ClipOval(
                   child: CircleAvatar(
-                    backgroundImage:
-                        AssetImage('assets/images/profile_pic.jpg'),
+                    backgroundImage: MemoryImage(image),
                     radius: 45,
                   ),
                 ),
@@ -124,9 +133,8 @@ class _EditProfileState extends State<EditProfile> {
                   height: size.height * 0.01,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    // ignore: avoid_print
-                    print('Change profile pic');
+                  onTap: () async {
+                    await profilepic_btmsheet(context, size);
                   },
                   child: const Text(
                     'Change Photo',
@@ -506,5 +514,110 @@ class _EditProfileState extends State<EditProfile> {
         ],
       ),
     );
+  }
+
+  profilepic_btmsheet(BuildContext context, Size size) async {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+              height: size.height * 0.2,
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Upload Image',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff3B1D2C),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await Utils.pickImageFromcamera()
+                                  .then((pickedFile) async {
+                                if (pickedFile == null) return;
+                                await Utils.cropSelectedprofileImage(
+                                        pickedFile.path)
+                                    .then((croppedFile) async {
+                                  if (croppedFile == null) return;
+                                  var file = await croppedFile.readAsBytes();
+                                  setState(() {
+                                    img = croppedFile;
+                                    encodeImage = base64.encode(file);
+                                    user.image = encodeImage;
+                                    print(encodeImage);
+                                  });
+                                });
+                              });
+                            },
+                            icon: Icon(
+                              Icons.camera,
+                              size: size.height * 0.05,
+                              color: const Color(0xff3B1D2C),
+                            ),
+                          ),
+                          const Text(
+                            'Camera',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff3B1D2C),
+                            ),
+                          )
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              await Utils.pickImageFromGallery()
+                                  .then((pickedFile) async {
+                                if (pickedFile == null) return;
+                                await Utils.cropSelectedprofileImage(
+                                        pickedFile.path)
+                                    .then((croppedFile) async {
+                                  if (croppedFile == null) return;
+                                  var file = await croppedFile.readAsBytes();
+                                  setState(() {
+                                    img = croppedFile;
+                                    encodeImage = base64.encode(file);
+                                    user.image = encodeImage;
+                                    print(encodeImage);
+                                  });
+                                });
+                              });
+                            },
+                            icon: Icon(
+                              Icons.collections,
+                              size: size.height * 0.05,
+                              color: const Color(0xff3B1D2C),
+                            ),
+                          ),
+                          const Text(
+                            'Gallery',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff3B1D2C),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ));
+        });
   }
 }

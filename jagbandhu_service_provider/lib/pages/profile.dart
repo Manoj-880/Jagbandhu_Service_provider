@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/api_calls/edit_profile_api.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
@@ -19,6 +21,7 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
+    var image = base64.decode(user.image);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(
@@ -66,10 +69,9 @@ class _MyProfileState extends State<MyProfile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const ClipOval(
+                  ClipOval(
                     child: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/profile_pic.jpg'),
+                      backgroundImage: MemoryImage(image),
                       radius: 45,
                     ),
                   ),
@@ -77,7 +79,7 @@ class _MyProfileState extends State<MyProfile> {
                     height: size.height * 0.01,
                   ),
                   Text(
-                    user.firstName! + user.lastname!,
+                    '${user.firstName!} ${user.lastname!}',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -89,7 +91,6 @@ class _MyProfileState extends State<MyProfile> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      var values = edit_profile_api();
                       // ignore: avoid_print
                       Navigator.push(
                         context,
@@ -130,16 +131,22 @@ class _MyProfileState extends State<MyProfile> {
                       height: size.height * 0.055,
                       width: size.width * 0.4,
                       decoration: BoxDecoration(
-                        color: const Color(0xffFFA95D),
+                        color: basicinfo == true
+                            ? const Color(0xffFFA95D)
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(size.height),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           'Basic Information',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            fontWeight: basicinfo == true
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: basicinfo == true
+                                ? Colors.white
+                                : const Color(0xff3B1D2C),
                           ),
                         ),
                       ),
@@ -156,15 +163,22 @@ class _MyProfileState extends State<MyProfile> {
                       height: size.height * 0.055,
                       width: size.width * 0.4,
                       decoration: BoxDecoration(
+                        color: bankdetails == true
+                            ? const Color(0xffFFA95D)
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(size.height),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           'Bank Details',
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xff3B1D2C),
+                            fontWeight: bankdetails == true
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: bankdetails == true
+                                ? Colors.white
+                                : const Color(0xff3B1D2C),
                           ),
                         ),
                       ),
@@ -304,33 +318,36 @@ class Profile_basic extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Email :',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff3B1D2C),
-                  ),
-                ),
-                const SizedBox(
-                  width: 58,
-                ),
-                Container(
-                  width: 200,
-                  child: Text(
-                    user.email!,
-                    style: const TextStyle(
+            if (user.email == null)
+              SizedBox()
+            else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Email :',
+                    style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       color: Color(0xff3B1D2C),
                     ),
                   ),
-                ),
-              ],
-            ),
+                  const SizedBox(
+                    width: 58,
+                  ),
+                  Container(
+                    width: 200,
+                    child: Text(
+                      user.email!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xff3B1D2C),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             const SizedBox(
               height: 10,
             ),

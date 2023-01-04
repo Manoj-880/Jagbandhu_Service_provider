@@ -20,11 +20,6 @@ class _SplashState extends State<Splash> {
     await database();
     userdata = await user();
     print(userdata);
-  }
-
-  @override
-  initState() {
-    checkData();
     if (userdata.isEmpty) {
       Timer(
         const Duration(seconds: 2),
@@ -46,6 +41,12 @@ class _SplashState extends State<Splash> {
         ),
       );
     }
+  }
+
+  @override
+  initState() {
+    checkData();
+
     super.initState();
   }
 
@@ -54,7 +55,10 @@ class _SplashState extends State<Splash> {
     // ignore: avoid_unnecessary_containers
 
     return Container(
-      child: Image.asset('assets/images/splash.png'),
+      child: Image.asset(
+        'assets/images/splash.png',
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

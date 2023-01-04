@@ -1,12 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
 import 'package:jagbandhu_service_provider/pages/add_templates.dart';
+import 'package:jagbandhu_service_provider/pages/assemble%20layers/assemble_layers.dart';
 import 'package:jagbandhu_service_provider/pages/my_templates.dart';
-
 import 'package:jagbandhu_service_provider/pages/profile.dart';
-
-import '../api_calls/add_template_api.dart';
-import '../api_calls/my_templates_api.dart';
 import '../sections/bottomNavBar.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var image = base64.decode(user.image);
     print(user);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -92,9 +91,8 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => const MyProfile()),
                         );
                       },
-                      child: const CircleAvatar(
-                        backgroundImage:
-                            AssetImage('assets/images/profile_pic.jpg'),
+                      child: CircleAvatar(
+                        backgroundImage: MemoryImage(image),
                         radius: 40,
                       ),
                     )
@@ -169,25 +167,16 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const AddTemplates()),
+                                                  const AssembleLayers()),
                                         );
                                       },
                                       // ignore: avoid_unnecessary_containers
                                       child: Container(
                                         child: Column(
                                           children: [
-                                            IconButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const AddTemplates()),
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                  Icons.add_circle_rounded),
-                                              iconSize: 40,
+                                            const Icon(
+                                              Icons.add_circle_rounded,
+                                              size: 40,
                                               color: const Color(0xffF65D46),
                                             ),
                                             // ignore: sized_box_for_whitespace
@@ -328,7 +317,6 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      var values = await mytemplatesapi();
                                       // ignore: use_build_context_synchronously
                                       Navigator.push(
                                         context,

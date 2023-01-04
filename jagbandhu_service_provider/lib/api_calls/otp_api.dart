@@ -38,6 +38,7 @@ Future otpvalidation(otp) async {
         state: (maps[index]['state']).toString(),
         city: (maps[index]['district']).toString(),
         status: (maps[index]['status']).toString(),
+        image: (maps[index]['image']),
       );
     });
 

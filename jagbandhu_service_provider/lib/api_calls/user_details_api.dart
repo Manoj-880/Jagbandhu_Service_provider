@@ -6,7 +6,8 @@ import 'dart:convert';
 import 'package:jagbandhu_service_provider/Constants/api.dart';
 import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
-
+import 'package:path/path.dart';
+import 'package:http_parser/http_parser.dart';
 import '../local_database.dart';
 
 Future<String> userdetailsapi(
@@ -29,7 +30,7 @@ Future<String> userdetailsapi(
   return userresponse.body;
 }
 
-Future<String> updateuserdetailsapi(
+Future updateuserdetailsapi(
   id,
   firstName,
   lastname,
@@ -39,12 +40,23 @@ Future<String> updateuserdetailsapi(
   state,
   country,
   phonenumber,
+  image,
 ) async {
-  final userresponse = await http.post(Uri.parse(
-      '${Apilink.ipAddress}/appupdateprovidersdetails?firstname=$firstName&pid=$id&lastname=$lastname&mobile=$phonenumber&email=$email&address=$address&district=$city&state=$state&country=$country'));
-  print(userresponse.body);
-
-  return userresponse.body;
+  try {
+    final response = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            '${Apilink.ipAddress}/appupdateprovidersdetails?firstname=$firstName&pid=$id&lastname=$lastname&mobile=$phonenumber&email=$email&address=$address&district=$city&state=$state&country=$country&image=$image'));
+    var multipartFile = (image == '')
+        ? null
+        : await http.MultipartFile.fromPath('image', image.path,
+            contentType: MediaType('image', 'jpeg'),
+            filename: basename(image.path));
+    (image == '') ? null : response.files.add(multipartFile!);
+    var res = await response.send().then((value) => print(value));
+  } catch (e) {
+    print(e);
+  }
 }
 
 Future getuserDetails(mobile) async {
@@ -67,6 +79,7 @@ Future getuserDetails(mobile) async {
       state: (maps[index]['state']).toString(),
       city: (maps[index]['district']).toString(),
       status: (maps[index]['status']).toString(),
+      image: (maps[index]['image']),
     );
   });
 

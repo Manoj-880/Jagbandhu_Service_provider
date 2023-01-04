@@ -3,9 +3,9 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/api_calls/add_template_api.dart';
-import 'package:jagbandhu_service_provider/api_calls/assemble_layers_api.dart';
 import 'package:jagbandhu_service_provider/models/layers_model.dart';
 import 'package:jagbandhu_service_provider/models/user_details_model.dart';
+import 'package:jagbandhu_service_provider/pages/assemble%20layers/add_image.dart';
 import 'package:jagbandhu_service_provider/pages/assemble%20layers/assemble_layers.dart';
 
 import '../sections/bottomNavBar.dart';
@@ -239,12 +239,15 @@ class _AddTemplatesState extends State<AddTemplates> {
                   onTap: () async {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      // var values = addtemplateapi(
-                      //     user.id, category, title.text, Discription, Price);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const AssembleLayers()),
+                            builder: (context) => AddBackground(
+                                  title: Title,
+                                  description: Discription,
+                                  price: Price,
+                                  categorey: category,
+                                )),
                       );
                     }
                   },
