@@ -1,8 +1,6 @@
-import 'dart:convert';
+// ignore_for_file: depend_on_referenced_packages, avoid_print
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 import 'package:jagbandhu_service_provider/Constants/api.dart';
-import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart';
 

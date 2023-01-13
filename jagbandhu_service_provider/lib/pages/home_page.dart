@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var image = base64.decode(user.image);
+    var image = user.image == null ? null : base64.decode(user.image);
     print(user);
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -92,7 +92,8 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: CircleAvatar(
-                        backgroundImage: MemoryImage(image),
+                        backgroundImage:
+                            user.image == null ? null : MemoryImage(image!),
                         radius: 40,
                       ),
                     )
@@ -177,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                             const Icon(
                                               Icons.add_circle_rounded,
                                               size: 40,
-                                              color: const Color(0xffF65D46),
+                                              color: Color(0xffF65D46),
                                             ),
                                             // ignore: sized_box_for_whitespace
                                             Container(
