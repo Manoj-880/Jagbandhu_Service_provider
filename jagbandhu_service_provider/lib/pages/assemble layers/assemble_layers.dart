@@ -109,6 +109,7 @@ class _AssembleLayersState extends State<AssembleLayers> {
                             Title: Title,
                             content: content,
                             lycount: lycount,
+                            stat: false,
                             value: value),
                       );
                     }).then((value) {
@@ -130,19 +131,33 @@ class _AssembleLayersState extends State<AssembleLayers> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+                    final Title =
+                        TextEditingController(text: _title[index].text);
+                    final content =
+                        TextEditingController(text: _content[index].text);
+                    var layer;
                     showDialog(
+                        barrierDismissible: false,
                         context: context,
                         builder: (BuildContext context) {
-                          return Dialog(
-                            child: Container(
-                              width: size.width * 0.95,
-                              height: size.height * 0.55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
+                          return layer = Dialog(
+                            child: addlayer_popup(
+                                size: size,
+                                Title: Title,
+                                content: content,
+                                lycount: lycount,
+                                stat: true,
+                                value: value),
                           );
+                        }).then((value) {
+                      if (Title.text.isNotEmpty && content.text.isNotEmpty) {
+                        setState(() {
+                          _title[index] = Title;
+                          _content[index] = content;
+                          position[index] = layer;
                         });
+                      }
+                    });
                   },
                   child: Card(
                     margin:
@@ -283,12 +298,14 @@ class addlayer_popup extends StatefulWidget {
     required this.content,
     required this.value,
     required this.lycount,
+    required this.stat,
   }) : super(key: key);
 
   final Size size;
   final TextEditingController Title;
   final TextEditingController content;
   final value;
+  bool stat;
   int lycount;
 
   @override
@@ -335,13 +352,21 @@ class _addlayer_popupState extends State<addlayer_popup> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Enter Layer details',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff3B1D2C)),
-                ),
+                widget.stat == false
+                    ? const Text(
+                        'Enter Layer details',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff3B1D2C)),
+                      )
+                    : const Text(
+                        'Update Layer details',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff3B1D2C)),
+                      ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -401,7 +426,6 @@ class _addlayer_popupState extends State<addlayer_popup> {
                         const SizedBox(
                           height: 10,
                         ),
-                        // ignore: sized_box_for_whitespace
                         Container(
                           width: widget.size.width,
                           child: TextFormField(
@@ -460,13 +484,21 @@ class _addlayer_popupState extends State<addlayer_popup> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Select position of the layer',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff3B1D2C)),
-                        ),
+                        widget.stat == false
+                            ? const Text(
+                                'Select position of the layer',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff3B1D2C)),
+                              )
+                            : const Text(
+                                'Update position of the layer',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xff3B1D2C)),
+                              ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -567,52 +599,97 @@ class _addlayer_popupState extends State<addlayer_popup> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        if (validatekey.currentState!.validate()) {
-                          validatekey.currentState!.save();
-                          ontap = [
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false,
-                            false
-                          ];
-                          Navigator.pop(context);
-                          setState(() {
-                            widget.lycount++;
-                          });
-                          print(widget.lycount);
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: widget.size.width * 0.25,
-                        height: widget.size.height * 0.05,
-                        decoration: BoxDecoration(
-                            color: const Color(0xffFFA95D),
-                            borderRadius:
-                                BorderRadius.circular(widget.size.height)),
-                        child: const Text(
-                          'Add',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                    widget.stat == false
+                        ? GestureDetector(
+                            onTap: () async {
+                              if (validatekey.currentState!.validate()) {
+                                validatekey.currentState!.save();
+                                ontap = [
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false
+                                ];
+                                Navigator.pop(context);
+                                setState(() {
+                                  widget.lycount++;
+                                });
+                                print(widget.lycount);
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: widget.size.width * 0.25,
+                              height: widget.size.height * 0.05,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffFFA95D),
+                                  borderRadius: BorderRadius.circular(
+                                      widget.size.height)),
+                              child: const Text(
+                                'Add',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: () async {
+                              if (validatekey.currentState!.validate()) {
+                                validatekey.currentState!.save();
+                                ontap = [
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false,
+                                  false
+                                ];
+                                Navigator.pop(context);
+
+                                print(widget.lycount);
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: widget.size.width * 0.25,
+                              height: widget.size.height * 0.05,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffFFA95D),
+                                  borderRadius: BorderRadius.circular(
+                                      widget.size.height)),
+                              child: const Text(
+                                'Update',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ],
                 )
               ],
