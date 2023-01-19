@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_final_fields, unused_field, prefer_typing_uninitialized_variables, non_constant_identifier_names, sized_box_for_whitespace, duplicate_ignore
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:jagbandhu_service_provider/api_calls/add_template_api.dart';
 import 'package:jagbandhu_service_provider/models/globalParams.dart';
 import 'package:jagbandhu_service_provider/pages/add_templates.dart';
 import 'package:jagbandhu_service_provider/pages/assemble%20layers/add_image.dart';
@@ -259,8 +262,12 @@ class _AssembleLayersState extends State<AssembleLayers> {
               ),
               GestureDetector(
                 onTap: () {
+                  print(lycount);
                   // var values = previewapi();
-                  print('move to preview');
+                  for (int i = 0; i <= _content.length; i++) {
+                    addtemplatecontent(
+                        tid, _title[i].text, _content[i].text, lypos[i] + 1, i);
+                  }
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10),
